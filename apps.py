@@ -32,7 +32,11 @@ def login_form():
         if user[3] == "administrador":
             return redirect(url_for("inicio"))
         else:
+<<<<<<< HEAD
             return redirect(url_for("panel_empleado"))
+=======
+            return "Bienvenido empleado"
+>>>>>>> 97b7d75405575abc9eacc314ba50e0c2561240b4
     else:
         flash("Usuario y contraseña incorrectos", "danger")
         return redirect(url_for('login'))
@@ -343,6 +347,7 @@ def salir():
     session.clear()
     return redirect(url_for('login'))
 
+<<<<<<< HEAD
 # PANEL EMPLEADO
 
 @apps.route('/panel_empleado')
@@ -369,6 +374,8 @@ def panel_empleado ():
 
     return render_template("panel_empleado.html", empleado=empleado)
 
+=======
+>>>>>>> 97b7d75405575abc9eacc314ba50e0c2561240b4
 
 if __name__ == '__main__':
     apps.run(debug=True)
