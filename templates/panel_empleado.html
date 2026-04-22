@@ -5,76 +5,74 @@
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body class="bg-light">
-
 <nav class="navbar navbar-dark bg-dark px-4">
     <span class="navbar-brand">Panel Empleado</span>
     <a href="/salir" class="btn btn-outline-light btn-sm">Cerrar Sesión</a>
 </nav>
-
 <div class="container mt-5">
-
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     {% if empleado %}
-
     <div class="card shadow p-4">
         <h3 class="text-center mb-4" style="color: #eec0cf; font-weight: 600;">
-     Bienvenido 🎴 , {{ empleado[2] }} {{ empleado[3] }}
-</h3>
+            Bienvenido 🎴, {{ empleado[2] }} {{ empleado[3] }}
+        </h3>
         <table class="table table-bordered table-striped">
             <tbody>
-                <tr>
-                    <th>Documento</th>
-                    <td>{{ empleado[1] }}</td>
-                </tr>
-                <tr>
-                    <th>Nombre</th>
-                    <td>{{ empleado[2] }} {{ empleado[3] }}</td>
-                </tr>
-                <tr>
-                    <th>Cargo</th>
-                    <td>{{ empleado[4] }}</td>
-                </tr>
-                <tr>
-                    <th>Departamento</th>
-                    <td>{{ empleado[12] }}</td>
-                </tr>
-                <tr>
-                    <th>Salario Base</th>
-                    <td>${{ "%.2f"|format(empleado[5]) }}</td>
-                </tr>
-                <tr>
-                    <th>Horas Extras</th>
-                    <td>{{ empleado[6] }}</td>
-                </tr>
-                <tr>
-                    <th>Bonificación</th>
-                    <td>${{ "%.2f"|format(empleado[7]) }}</td>
-                </tr>
-                <tr>
-                    <th>Descuento Salud (4%)</th>
-                    <td>${{ "%.2f"|format(empleado[8]) }}</td>
-                </tr>
-                <tr>
-                    <th>Descuento Pensión (4%)</th>
-                    <td>${{ "%.2f"|format(empleado[9]) }}</td>
-                </tr>
-                <tr class="table-success">
-                    <th>Salario Neto</th>
-                    <td><strong>${{ "%.2f"|format(empleado[10]) }}</strong></td>
-                </tr>
+                <tr><th>Documento</th><td>{{ empleado[1] }}</td></tr>
+                <tr><th>Nombre</th><td>{{ empleado[2] }} {{ empleado[3] }}</td></tr>
+                <tr><th>Apellido</th><td>{{ empleado[2] }} {{ empleado[3] }}</td></tr>
+                <tr><th>Cargo</th><td>{{ empleado[4] }}</td></tr>
+                <tr><th>Departamento</th><td>{{ empleado[12] }}</td></tr>
+                <tr><th>Salario Base</th><td>${{ "%.2f"|format(empleado[5]) }}</td></tr>
+                <tr><th>Horas Extras</th><td>{{ empleado[6] }}</td></tr>
+                <tr><th>Bonificación</th><td>${{ "%.2f"|format(empleado[7]) }}</td></tr>
+                <tr><th>Descuento Salud (4%)</th><td>${{ "%.2f"|format(empleado[8]) }}</td></tr>
+                <tr><th>Descuento Pensión (4%)</th><td>${{ "%.2f"|format(empleado[9]) }}</td></tr>
+                <tr class="table-success"><th>Salario Neto</th><td><strong>${{ "%.2f"|format(empleado[10]) }}</strong></td></tr>
             </tbody>
         </table>
+        <div class="text-end mt-3">
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditar">
+                 Editar mis datos
+            </button>
+        </div>
     </div>
-
+    <div class="modal fade" id="modalEditar" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #eec0cf;">
+                    <h5 class="modal-title text-white">Editar mis datos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/actualizar_perfil">
+                        <input type="hidden" name="id" value="{{ empleado[0] }}">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" name="nombre" class="form-control mb-3" value="{{ empleado[2] }}" required>
+                        <label class="form-label">Apellido</label>
+                        <input type="text" name="apellido" class="form-control mb-3" value="{{ empleado[3] }}" required>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-warning">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     {% else %}
     <div class="alert alert-warning text-center">
-        No se encontraron datos asociados a tu usuario.
-        <br>Contacta al administrador.
+        No se encontraron datos asociados a tu usuario.<br>Contacta al administrador.
     </div>
     {% endif %}
-
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
